@@ -8,7 +8,7 @@ folder = str(os.path.dirname(os.path.realpath(__file__))) + '/training_dataset/'
 #     bufgen = takewhile(lambda x: x, (f.raw.read(1024*1024) for _ in repeat(None)))
 #     return sum( buf.count(b'\n') for buf in bufgen )
 
-def process(i_beg = 1, i_end = 6):
+def process(i_beg = 1, i_end = 200000):
     """
     Create a file `matrix.txt` with number of processes and number of nodes (lines).
     Files have to be in a folder named 'training_dataset'.
