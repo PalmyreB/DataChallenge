@@ -1,0 +1,19 @@
+##########  New malware detection framework based on N-grams and Support Vector Domain Description 
+Description :
+In this paper, we present a new framework for malware
+detection. It’s based on N-grams method to extract features
+from executable files
+
+Représentation method :
+Kolter and Maloof [1, 10] represented malware though Ngrams
+as features and selected top 500 N-grams according to
+information gain measure [10]. 
+
+ Schultz et al [2]
+extracted features with N-grams from a set of malicious
+programs using three approaches (i.e the list of dynamic link
+library calls, strings sequences and byte sequences),
+
+ [8] collected features with N-grams and selected
+them hierarchically, the result were classified using decision
+trees, naïve Bayes, and Support Vector Machine.
