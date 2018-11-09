@@ -4,3 +4,6 @@
 https://media.kaspersky.com/en/enterprise-security/Kaspersky-Lab-Whitepaper-Machine-Learning.pdf
 
 
+## State of the art review of Malware detection
+  - Look at Behavior based approach
+  https://link.springer.com/article/10.1186/s13673-018-0125-x
