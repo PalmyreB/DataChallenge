@@ -1,7 +1,8 @@
 # from itertools import (takewhile,repeat)
 import re
+import os
 
-folder = '/home/palmyre/Documents/Huawei Data Challenge/sub_training_set/'
+folder = str(os.path.dirname(os.path.realpath(__file__))) + '/training_dataset/'
 
 # def count_lines(f):
 #     bufgen = takewhile(lambda x: x, (f.raw.read(1024*1024) for _ in repeat(None)))
@@ -10,6 +11,7 @@ folder = '/home/palmyre/Documents/Huawei Data Challenge/sub_training_set/'
 def process(i_beg = 1, i_end = 6):
     """
     Create a file `matrix.txt` with number of processes and number of nodes (lines).
+    Files have to be in a folder named 'training_dataset'.
 
     i_beg : index of first sample
     i_end : index+1 of last sample
