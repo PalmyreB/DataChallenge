@@ -1,0 +1,14 @@
+% sur la console Windows
+set PATH=C:\Users\Antoine\Documents\huawei_challenge;C:\Program Files\puTTy
+% C:\Users\Antoine\Documents\huawei_challenge is your working directory
+% C:\Program Files\puTTy                      is where puTTy is installed
+
+
+% Copier du serveur vers l'ordi
+pscp -i KeyPair-c82a.ppk cloud@90.84.240.20:/home/cloud/hackathon/nom_du_fichier_a_copier.ext codes
+% KeyPair-c82a.ppk must be in C:\Users\Antoine\Documents\huawei_challenge
+% codes is a directory in C:\Users\Antoine\Documents\huawei_challenge (working directory)
+
+% Copier de l'ordi vers le serveur
+pscp -i KeyPair-c82a.ppk codes\nom_du_fichier_a_copier.py cloud@90.84.240.20:/home/cloud/hackathon/
+% KeyPair-c82a.ppk must be in C:\Users\Antoine\Documents\huawei_challenge
