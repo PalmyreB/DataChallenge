@@ -7,6 +7,10 @@ Comments : lire à partir de la page 10'5, Deep learning in post-execution behav
 ## State of the art review of Malware detection
   - Look at Behavior based approach
   https://link.springer.com/article/10.1186/s13673-018-0125-x
+  
+## System Call-based Detection of Malicious Processes
+http://www.datafusionlab.org/sites/default/files/publications/Canzanese_QRS_2015.pdf
+- Intéressant pour feature extraction : TF-IDF puis Laplace smoothing.
 
 ## Is it possible to detect malicious behaviour performed by malware, based on monitoring system calls?
 https://news.ycombinator.com/item?id=12183694
