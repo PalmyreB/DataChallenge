@@ -2,5 +2,5 @@
 
 #Overview du sujet
 https://media.kaspersky.com/en/enterprise-security/Kaspersky-Lab-Whitepaper-Machine-Learning.pdf
-
+Comments : lire à partir de la page 10'5, Deep learning in post-execution behavior detection
 
