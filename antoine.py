@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from pylab import savefig
 import pandas as pd
 import re
-from sklearn import linear_model, decomposition, metrics, model_selection, preprocessing
+from sklearn import linear_model, decomposition, metrics, model_selection, preprocessing, svm
 import seaborn as sns
 from numpy import linalg
 import pprint
@@ -232,9 +232,9 @@ start_time = time.time()
 
 print("----------------------------------------Plotting------------------------------------------------------")
 for i in range(0, p):
-    sns.set()
+    plt.clf()
     df = pd.DataFrame(data=npX[:, i], index=np.arange(0,p), columns=[0])
-    svm = sns.distplot(df, bins=100)
+    svm = sns.distplot(df)
     figure = svm.get_figure() 
     figure.savefig("figures/output_feature_"+str(i)+".png")
 
