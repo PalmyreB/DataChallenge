@@ -7,15 +7,21 @@ import re
 from sklearn import linear_model, decomposition, metrics, model_selection, preprocessing
 from numpy import linalg
 import pprint
+import time
 
 import warnings
 warnings.filterwarnings("ignore")
 
+start_time = time.time()
 print("----------------------------------------Import matrix--------------------------------------------------------------")
 #matrix_test = np.array([[[('stub.exe_9f01000', 'sample.exe_1356d000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']], [[('stub.exe_9f01000', 'sample.exe_1356d000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']], [[('stub.exe_1319c000', 'sample.exe_11ad0000'), ('stub.exe_1319c000', 'sample.exe_11ad0000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']]])
 matrix_test_total = np.load("../palmyre/matrix.raw")
-matrix_test = matrix_test_total[0:50, :]
+matrix_test = matrix_test_total[0:1000, :]
 N = len(matrix_test)
+
+end_time = time.time()
+print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
+start_time = time.time()
 
 def clean(line):
     for i in range(0, len(line[1])):
@@ -25,11 +31,11 @@ def clean(line):
 print("----------------------------------------Cleaning--------------------------------------------------------------")
 np.apply_along_axis(lambda line: clean(line), 1, matrix_test)
 
-print("----------------------------------------Printing------------------------------------------------------")
-pprint.pprint(matrix_test)
+end_time = time.time()
+print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
+start_time = time.time()
 
 p = 11 #Nb de features
-
 X = []
 
 print("----------------------------------------Feature Engineering------------------------------------------------------")
@@ -43,8 +49,7 @@ def count(line):
 np.apply_along_axis(lambda line: count_line_tab.append(count(line[1])), 1, matrix_test)
 
 npcount_line_tab = np.array(count_line_tab)
-print("----------------------------------------Printing------------------------------------------------------")
-#pprint.pprint(npcount_line_tab)
+
 
 def count_max_same_api_call(dict_line):
     maxi = 0
@@ -166,13 +171,25 @@ for i in range(0, len(npcount_line_tab)):
 for i in range(0, len(npcount_line_tab)):
     X.append(count_moy_rsi_call(npcount_line_tab[i]))
 
+#Nb api 
+
 npX = np.reshape(X, (p, N))
 
-print("----------------------------------------Printing------------------------------------------------------")
-pprint.pprint(npX)
+end_time = time.time()
+print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
+start_time = time.time()
 
 print("----------------------------------------Save in file------------------------------------------------------")
-numpy.savetxt("X.csv", npX, delimiter=",")
+np.savetxt("X.csv", npX, delimiter=",")
+
+end_time = time.time()
+print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
+start_time = time.time()
+
+print("----------------------------------------Printing------------------------------------------------------")
+#pprint.pprint(matrix_test)
+#pprint.pprint(npcount_line_tab)
+#pprint.pprint(npX)
 
 #Min process generation
 #Max process generation
