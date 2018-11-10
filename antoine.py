@@ -20,8 +20,9 @@ start_time = time.time()
 print("----------------------------------------Import matrix--------------------------------------------------------------")
 #matrix_test = np.array([[[('stub.exe_9f01000', 'sample.exe_1356d000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']], [[('stub.exe_9f01000', 'sample.exe_1356d000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']], [[('stub.exe_1319c000', 'sample.exe_11ad0000'), ('stub.exe_1319c000', 'sample.exe_11ad0000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']]])
 matrix_test_total = np.load("../palmyre/matrix.raw")
-matrix_test = matrix_test_total[0:1000, :]
-del matrix_test_total[1000:, :]
+matrix_validation_total = np.load("../palmyre/matrix_validation.npy")
+matrix_test = matrix_test_total[0:100, :]
+matrix_validation = matrix_test_total[1:, :]
 N = len(matrix_test)
 
 end_time = time.time()
@@ -249,13 +250,26 @@ X_train = pd.DataFrame(data=npX, index=np.arange(0,p), columns=np.arange(0,N))
 scaler = preprocessing.StandardScaler()
 scaler.fit(X_train)
 X_train = pd.DataFrame(scaler.transform(X_train), columns=X_train.columns)
+X_validation = pd.DataFrame(scaler.transform(X_validation), columns=X_validation.columns)
 
 end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
 start_time = time.time()
 
 print("----------------------------------------Training------------------------------------------------------")
+parameters = {'kernel':('linear', 'rbf'), 'C':[1, 10]}
+svc = svm.SVC(gamma="scale")
+clf = GridSearchCV(svc, parameters, cv=5)
+clf.fit(X_train, label)
+label_result = clf.predict(X_validation)
 
+end_time = time.time()
+print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
+start_time = time.time()
+
+print("----------------------------------------Save in file------------------------------------------------------")
+file_name='answer.txt'
+np.savetxt(file_name, label_result.values, fmt='%d')
 
 end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
