@@ -1,4 +1,5 @@
 # from itertools import (takewhile,repeat)
+import joblib
 import numpy as np
 import os
 import re
@@ -20,7 +21,7 @@ def process():
     - couples (parent, child)
     - lines of behavior_sequence files.
 
-    The file can then be loaded with numpy.load(file).
+    # The file can then be loaded with joblib.load('').
     """
     folder = '/home/cloud/hackathon/'
     training_dir = folder + 'training_dataset/'
@@ -39,7 +40,8 @@ def process():
             lines = [line for line in f]
         matrix.append([processes, lines])
     ndarray = np.array(matrix)
-    ndarray.dump('matrix.raw')
+    joblib.dump(ndarray, 'matrix.gz', compress=3)
+    # ndarray.dump('matrix.raw')
 
 if __name__ == '__main__':
     process()
