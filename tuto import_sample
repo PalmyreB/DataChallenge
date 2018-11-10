@@ -1,0 +1,2 @@
+  for /l %x in (10, 1, 99) do  pscp -i KeyPair-c82a.ppk cloud@90.84.240.20:/home/cloud/hackathon/training_dataset/training_0000%x_behavior_sequence.txt data
+  for /l %x in (10, 1, 99) do  pscp -i KeyPair-c82a.ppk cloud@90.84.240.20:/home/cloud/hackathon/training_dataset/training_0000%x_process_generation.txt data
