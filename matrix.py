@@ -14,10 +14,13 @@ import re
 
 def process():
     """
-    Return a NumPy array with as many lines as samples,
+    Dump a NumPy array to a file 'matrix.raw' 
+    with as many lines as samples,
     and two columns:
     - couples (parent, child)
     - lines of behavior_sequence files.
+
+    The file can then be loaded with numpy.load(file).
     """
     folder = '/home/cloud/hackathon/'
     training_dir = folder + 'training_dataset/'
@@ -35,4 +38,8 @@ def process():
         with open(training_dir + 'training_{}_behavior_sequence.txt'.format(index), 'r') as f:
             lines = [line for line in f]
         matrix.append([processes, lines])
-    return np.array(matrix)
+    ndarray = np.array(matrix)
+    ndarray.dump('matrix.raw')
+
+if __name__ == '__main__':
+    process()
