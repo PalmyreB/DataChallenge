@@ -3,7 +3,7 @@
 import numpy as np
 import math
 import pandas as pd
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split #GridSearchCV
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import roc_curve
 from sklearn.metrics import auc
