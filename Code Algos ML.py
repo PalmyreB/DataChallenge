@@ -10,7 +10,7 @@ from sklearn.metrics import roc_curve
 from sklearn.metrics import auc
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
-
+from sklearn.naive_bayes import GaussianNB
 
 ###II- Loading data:
 
@@ -30,10 +30,29 @@ y_test=........
 ###IV- Algorithms ### (use gridsearch)
 
 #1. Naïve Bayes
+gnb = GaussianNB()
+gnb.fit(X_train, y_train)
+print("Accuracy score (training): {0:.4f}".format(gnb.score(X_train, y_train)))
+print("Accuracy score (testing): {0:.4f}".format(gnb.score(X_test, y_test)))
+
+y_scores_gnb = gnb.decision_function(X_test)
+fpr_gnb, tpr_gnb, threshold = roc_curve(list(y_test), y_scores_gnb)
+roc_auc_gnb = auc(fpr_gnb, tpr_gnb)
+
+print("Area under ROC curve = {:0.2f}".format(roc_auc_gnb))
+plt.plot(fpr_gnb, tpr_gnb)
+plt.xlabel('False positive rate')
+plt.ylabel('True positive rate')
+plt.title('ROC curve')
+plt.legend(loc='Gaussian Naive Bayes')
+plt.show()    
+#2. SVM 
 
 
 
-#2. Decision Trees
+
+
+#3. Decision Trees
 max_depth= list(range(20)) #Tune on this param or min_samples_split or max_features
 param_grid={'max_depth':max_depth}
 dt = DecisionTreeClassifier()
@@ -57,7 +76,7 @@ plt.show()
 
 
 
-#3. RandomForest
+#4. RandomForest
 estimators = [10,15] #Tune on this param or max_depth, or max_features
 param_grid={'n_estimators':estimators}
 rf = RandomForestClassifier()
@@ -82,7 +101,7 @@ plt.show()
 
 
 
-#Boosting
+#5. Boosting
 learning_rates = [0.05, 0.1, 0.25, 0.5, 0.75, 1] #Tune on this param or n_estimators or max_features
 param_grid={'learning_rate':learning_rates}
 gb = GradientBoostingClassifier(n_estimators=20, max_features=2, max_depth = 2, random_state = 0)
