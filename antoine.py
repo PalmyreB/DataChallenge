@@ -22,7 +22,7 @@ print("----------------------------------------Import matrix--------------------
 matrix_test_total = np.load("../palmyre/matrix.raw")
 matrix_validation_total = np.load("../palmyre/matrix_validation.npy")
 matrix_test = matrix_test_total[0:100, :]
-matrix_validation = matrix_test_total[1:, :]
+matrix_validation = matrix_validation_total[1:, :]
 N = len(matrix_test)
 N_test = len(matrix_validation)
 
@@ -49,13 +49,14 @@ def clean(line):
         
 print("----------------------------------------Cleaning--------------------------------------------------------------")
 np.apply_along_axis(lambda line: clean(line), 1, matrix_test)
+np.apply_along_axis(lambda line: clean(line), 1, matrix_validation)
 
 end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
 start_time = time.time()
 
 p = 13 #Nb de features
-pourcenttrain = 0.9
+#pourcenttrain = 0.9
 X = []
 X_test = []
 
@@ -217,6 +218,8 @@ for i in range(0, len(npcount_line_tab)):
 
 npX = np.reshape(X, (p, N))
 
+################################################################################################
+
 #Total Nb process generation
 np.apply_along_axis(lambda line: X_test.append(len(line[0])), 1, matrix_validation)
 #Total Nb api/rsi calls
@@ -255,10 +258,10 @@ for i in range(0, len(npcount_line_tab_test)):
 
 #Nb api differentes
 for i in range(0, len(npcount_line_tab_test)):
-    X.append(count_nb_api(npcount_line_tab_test[i]))
+    X_test.append(count_nb_api(npcount_line_tab_test[i]))
 #Nb rsi differentes
 for i in range(0, len(npcount_line_tab_test)):
-    X.append(count_nb_rsi(npcount_line_tab_test[i]))
+    X_test.append(count_nb_rsi(npcount_line_tab_test[i]))
 
 npX_test = np.reshape(X_test, (p, N_test))
 
@@ -268,6 +271,7 @@ start_time = time.time()
 
 print("----------------------------------------Save in file------------------------------------------------------")
 np.savetxt("X.csv", npX, delimiter=",")
+np.savetxt("X_test.csv", npX, delimiter=",")
 
 end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
@@ -318,7 +322,7 @@ start_time = time.time()
 
 print("----------------------------------------Save in file------------------------------------------------------")
 file_name='answer.txt'
-np.savetxt(file_name, label_result.values, fmt='%d')
+np.savetxt(file_name, label_result, fmt='%d')
 
 end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
