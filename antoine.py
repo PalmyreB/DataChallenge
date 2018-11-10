@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import re
 from sklearn import linear_model, decomposition, metrics, model_selection, preprocessing
+import seaborn as sns
 from numpy import linalg
 import pprint
 import time
@@ -23,6 +24,18 @@ end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
 start_time = time.time()
 
+start_time = time.time()
+print("----------------------------------------Import label--------------------------------------------------------------")
+with open('../true_labels_training.txt') as f:
+    lines = f.readlines()
+labels=np.array(lines[0].split(""))
+
+pprint.pprint(labels)
+
+end_time = time.time()
+print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
+start_time = time.time()
+
 def clean(line):
     for i in range(0, len(line[1])):
         string = re.sub("\n", "", line[1][i])
@@ -35,7 +48,7 @@ end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
 start_time = time.time()
 
-p = 11 #Nb de features
+p = 13 #Nb de features
 X = []
 
 print("----------------------------------------Feature Engineering------------------------------------------------------")
@@ -135,6 +148,20 @@ def count_moy_api_call_par_process(dict_line):
     else:
         return 0.0
 
+def count_nb_api(dict_line):
+    counter = 0
+    for key in dict_line:
+        if str(key)[0:4] == "api_":
+            counter += 1
+    return counter
+
+def count_nb_rsi(dict_line):
+    counter = 0
+    for key in dict_line:
+        if str(key)[0:4] != "api_" and "." not in str(key):
+            counter += 1
+    return counter
+
 #Total Nb process generation
 np.apply_along_axis(lambda line: X.append(len(line[0])), 1, matrix_test)
 #Total Nb api/rsi calls
@@ -171,7 +198,12 @@ for i in range(0, len(npcount_line_tab)):
 for i in range(0, len(npcount_line_tab)):
     X.append(count_moy_rsi_call(npcount_line_tab[i]))
 
-#Nb api 
+#Nb api differentes
+for i in range(0, len(npcount_line_tab)):
+    X.append(count_nb_api(npcount_line_tab[i]))
+#Nb rsi differentes
+for i in range(0, len(npcount_line_tab)):
+    X.append(count_nb_rsi(npcount_line_tab[i]))
 
 npX = np.reshape(X, (p, N))
 
@@ -191,6 +223,10 @@ print("----------------------------------------Printing-------------------------
 #pprint.pprint(npcount_line_tab)
 #pprint.pprint(npX)
 
+print("----------------------------------------Plotting------------------------------------------------------")
+for i in range(0, N):
+    sns.distplot(npX[:, i]);
+
 #Min process generation
 #Max process generation
 #Threshold process generation -> np.where(y_tr >= 1800, 1, 0)
@@ -201,5 +237,3 @@ print("----------------------------------------Printing-------------------------
 #api is 0
 
 #behavior graph has boucle
-#nombre d'api différentes
-#nombre d'adresses différentes
