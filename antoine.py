@@ -11,6 +11,7 @@ import pprint
 import warnings
 warnings.filterwarnings("ignore")
 
+print("----------------------------------------Import matrix--------------------------------------------------------------")
 #matrix_test = np.array([[[('stub.exe_9f01000', 'sample.exe_1356d000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']], [[('stub.exe_9f01000', 'sample.exe_1356d000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']], [[('stub.exe_1319c000', 'sample.exe_11ad0000'), ('stub.exe_1319c000', 'sample.exe_11ad0000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']]])
 matrix_test = np.load("../palmyre/matrix.raw")
 N = len(matrix_test)
@@ -23,17 +24,17 @@ def clean(line):
         string = re.sub("\n", "", line[1][i])
         matrix_test_clean[-1][1].append(string.split(","))
         
-## Cleaning
+print("----------------------------------------Cleaning--------------------------------------------------------------")
 np.apply_along_axis(lambda line: clean(line), 1, matrix_test)
 
-print("------------------------------------------------------------------------------------------------------")
-
+print("----------------------------------------Printing------------------------------------------------------")
 pprint.pprint(matrix_test_clean)
 
 p = 2 #Nb de features
 
 X = []
 
+print("----------------------------------------Feature Engineering------------------------------------------------------")
 #Total Nb process generation
 np.apply_along_axis(lambda line: X.append(len(line[0])), 1, matrix_test_clean)
 #Total Nb api calls
@@ -42,6 +43,7 @@ np.apply_along_axis(lambda line: X.append(len(line[1])), 1, matrix_test_clean)
 
 npX = np.reshape(X, (p, N))
 
+print("----------------------------------------Printing------------------------------------------------------")
 pprint.pprint(npX)
 
 #Min process generation
