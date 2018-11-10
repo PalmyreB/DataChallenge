@@ -1,0 +1,98 @@
+import os
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+import numpy as np
+
+behaviour=[]
+process=[]
+
+for filename in os.listdir('C:/Users/jaime/Documents/hackathon/training_dataset'):
+    if filename.endswith("behavior_sequence.txt") :
+        behaviour.append(filename)
+    if filename.endswith("process_generation.txt") :
+        process.append(filename)
+
+with open('true_labels_training.txt') as f:
+    lines = f.readlines()
+
+labels=[i for i in lines[0][10:100]]
+
+df_behaviour=pd.DataFrame({'filename':behaviour})
+df_process=pd.DataFrame({'filename':process})
+
+df_behaviour['labels']=labels
+
+def clean_text(filename):
+    with open(os.path.join('training_dataset', filename), 'r') as myfile:
+        return(myfile.read())
+def nettoyer(txt):
+    txt=txt.replace('\n', ',')
+    txt=txt.split(',')
+    return(txt[:-1])
+def extract_memoire(arr):
+    return([arr[i] for i in range(1,int(len(arr)/3),3)])
+def extract_api(arr):
+    return([arr[i] for i in range(2,int(len(arr)/3),3)])
+
+
+df_behaviour['text']=df_behaviour['filename'].apply(clean_text).apply(nettoyer)
+df_process['text']=df_process['filename'].apply(clean_text).apply(nettoyer)
+
+
+df_behaviour['memoire']=df_behaviour['text'].apply(extract_memoire)
+df_behaviour['api']=df_behaviour['text'].apply(extract_api)
+
+df_behaviour['memoire'].as_matrix()
+
+
+# our corpus
+data = df_behaviour['api'].as_matrix()
+data=[' '.join(i) for i in data]
+cv = CountVectorizer()
+
+# convert text data into term-frequency matrix
+data = cv.fit_transform(data)
+tfidf_transformer = TfidfTransformer()
+
+# convert term-frequency matrix into tf-idf
+tfidf_matrix = tfidf_transformer.fit_transform(data)
+
+# create dictionary to find a tfidf word each word
+word2tfidf_api = dict(zip(cv.get_feature_names(), tfidf_transformer.idf_))
+
+
+# our corpus
+data = df_behaviour['memoire'].as_matrix()
+data=[' '.join(i) for i in data]
+cv = CountVectorizer()
+
+# convert text data into term-frequency matrix
+data = cv.fit_transform(data)
+tfidf_transformer = TfidfTransformer()
+
+# convert term-frequency matrix into tf-idf
+tfidf_matrix = tfidf_transformer.fit_transform(data)
+
+# create dictionary to find a tfidf word each word
+word2tfidf_memoire = dict(zip(cv.get_feature_names(), tfidf_transformer.idf_))
+
+df_behaviour['api_tf_idf']=df_behaviour['api'].apply(lambda x: [word2tfidf_api[i] for i in x])
+df_behaviour['memoire_tf_idf']=df_behaviour['memoire'].apply(lambda x: [word2tfidf_memoire[i] for i in x])
+
+df_behaviour['api_tf_idf']=df_behaviour.api_tf_idf.apply(lambda y: [0] if len(y)==0 else y)
+df_behaviour['memoire_tf_idf']=df_behaviour.memoire_tf_idf.apply(lambda y: [0] if len(y)==0 else y)
+
+for i in ['api_tf_idf','memoire_tf_idf']:
+    df_behaviour[str(i+'_min')]=df_behaviour[i].apply(np.min)
+    df_behaviour[str(i+'_mean')]=df_behaviour[i].apply(np.mean)
+    df_behaviour[str(i+'_max')]=df_behaviour[i].apply(np.max)
+    df_behaviour[str(i+'_var')]=df_behaviour[i].apply(np.var)
+
+
+df_behaviour[df_behaviour['labels']=='1'].describe()
+
+df_behaviour[df_behaviour['labels']=='0'].describe()
+
+df_behaviour[df_behaviour['labels']=='0'].describe()
+
+df_behaviour['text']=df_behaviour['filename'].apply(clean_text).apply(nettoyer)
