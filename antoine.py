@@ -1,7 +1,10 @@
 #! python3.6
 # -*- coding: cp1252 -*-
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from pylab import savefig
 import pandas as pd
 import re
 from sklearn import linear_model, decomposition, metrics, model_selection, preprocessing
@@ -28,7 +31,7 @@ start_time = time.time()
 print("----------------------------------------Import label--------------------------------------------------------------")
 with open('../true_labels_training.txt') as f:
     lines = f.readlines()
-labels=np.array(lines[0].split(""))
+labels=np.array([int(lines[0][i]) for i in range(0,len(lines[0]))])
 
 pprint.pprint(labels)
 
@@ -223,9 +226,21 @@ print("----------------------------------------Printing-------------------------
 #pprint.pprint(npcount_line_tab)
 #pprint.pprint(npX)
 
+end_time = time.time()
+print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
+start_time = time.time()
+
 print("----------------------------------------Plotting------------------------------------------------------")
-for i in range(0, N):
-    sns.distplot(npX[:, i]);
+for i in range(0, p):
+    sns.set()
+    df = pd.DataFrame(data=npX[:, i], index=np.arange(0,p), columns=[0])
+    svm = sns.distplot(df, bins=100)
+    figure = svm.get_figure() 
+    figure.savefig("figures/output_feature_"+str(i)+".png")
+
+end_time = time.time()
+print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
+start_time = time.time()
 
 #Min process generation
 #Max process generation
