@@ -19,9 +19,9 @@ warnings.filterwarnings("ignore")
 start_time = time.time()
 print("----------------------------------------Import matrix--------------------------------------------------------------")
 #matrix_test = np.array([[[('stub.exe_9f01000', 'sample.exe_1356d000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']], [[('stub.exe_9f01000', 'sample.exe_1356d000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']], [[('stub.exe_1319c000', 'sample.exe_11ad0000'), ('stub.exe_1319c000', 'sample.exe_11ad0000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']]])
-matrix_test_total = np.load("../palmyre/matrix.raw")
+matrix_test_total = np.load("../palmyre/matrix_training_1.npy")
 matrix_validation_total = np.load("../palmyre/matrix_validation.npy")
-matrix_test = matrix_test_total[0:100, :]
+matrix_test = matrix_test_total[1:, :]
 matrix_validation = matrix_validation_total[1:, :]
 N = len(matrix_test)
 N_test = len(matrix_validation)
