@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
-
+import shutil
 
 ###II- Loading data:
 
@@ -20,9 +20,10 @@ X_train=.......
 y_train=.......
 X_test=........
 y_test=........
-
+X_val=.........
 
 ### III- feature engineering
+
 
 
 ###IV- Algorithms ### (use gridsearch)
@@ -136,3 +137,17 @@ plt.ylabel('True positive rate')
 plt.title('ROC curve')
 plt.legend(loc='best for XGBoost')
 plt.show()    
+
+          
+          
+#### Best classifier
+          
+Best_classifier=.............
+best_classifier.fit(X_train,y_train)
+y_pred=pd.DataFrame(best_classifier.predict(X_val))
+file_path='.....'
+file_name='answer.txt'
+zip_file_directory=..............
+np.savetxt(file_path+file_name, y_pred.values, fmt='%d')
+shutil.make_archive(file_path+file_name, 'zip',zip_file_directory)
+          
