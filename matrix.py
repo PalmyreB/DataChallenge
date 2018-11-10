@@ -17,13 +17,12 @@ def process():
         with open(folder + 'training_{}_process_generation.txt'.format(index), 'r') as f:
             processes = set()
             for line in f:
-                child = re.search(u'(?<=-> )\w+\.exe', line)
-                if  child:
-                    processes.add(child.group(0))
-            nb_processes = len(processes)
+                spawn = re.search(u'(\w+).exe -> (\w+)\.exe', line)
+                if  spawn:
+                    processes.add((spawn.group(1), spawn.group(2)))
         with open(folder + 'training_{}_behavior_sequence.txt'.format(index), 'r') as f:
-            nb_lines =  sum(1 for line in f)
-        matrix.append([nb_processes, nb_lines])
+            lines = [line for line in f]
+        matrix.append([processes, lines])
     with open(folder + 'matrix.txt', 'w') as m:
         m.write(str(matrix))
 
