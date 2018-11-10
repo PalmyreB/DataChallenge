@@ -135,6 +135,7 @@ np.apply_along_axis(lambda line: X.append(len(line[0])), 1, matrix_test)
 #Total Nb api/rsi calls
 np.apply_along_axis(lambda line: X.append(len(line[1])), 1, matrix_test)
 
+
 #Nb min d'api call par process
 for i in range(0, len(npcount_line_tab)):
     X.append(count_min_api_call_par_process(npcount_line_tab[i]))
@@ -170,6 +171,9 @@ npX = np.reshape(X, (p, N))
 print("----------------------------------------Printing------------------------------------------------------")
 pprint.pprint(npX)
 
+print("----------------------------------------Save in file------------------------------------------------------")
+numpy.savetxt("X.csv", npX, delimiter=",")
+
 #Min process generation
 #Max process generation
 #Threshold process generation -> np.where(y_tr >= 1800, 1, 0)
@@ -182,9 +186,3 @@ pprint.pprint(npX)
 #behavior graph has boucle
 #nombre d'api différentes
 #nombre d'adresses différentes
-
-
-# Set up a cross-validation with sklearn
-#skf = model_selection.StratifiedKFold()
-#sk_folds = skf.split(X_clf, y_clf)
-
