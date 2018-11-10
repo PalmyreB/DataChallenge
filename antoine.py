@@ -24,6 +24,7 @@ matrix_validation_total = np.load("../palmyre/matrix_validation.npy")
 matrix_test = matrix_test_total[0:100, :]
 matrix_validation = matrix_test_total[1:, :]
 N = len(matrix_test)
+N_test = len(matrix_validation)
 
 end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
@@ -56,9 +57,11 @@ start_time = time.time()
 p = 13 #Nb de features
 pourcenttrain = 0.9
 X = []
+X_test = []
 
 print("----------------------------------------Feature Engineering------------------------------------------------------")
 count_line_tab = []
+count_line_tab_test = []
 
 def count(line):
     unique, counts = np.unique(line, return_counts=True)
@@ -66,9 +69,10 @@ def count(line):
 
 #Count
 np.apply_along_axis(lambda line: count_line_tab.append(count(line[1])), 1, matrix_test)
+np.apply_along_axis(lambda line: count_line_tab.append(count(line[1])), 1, matrix_validation)
 
 npcount_line_tab = np.array(count_line_tab)
-
+npcount_line_tab_test = np.array(count_line_tab_test)
 
 def count_max_same_api_call(dict_line):
     maxi = 0
@@ -171,7 +175,7 @@ def count_nb_rsi(dict_line):
 #Total Nb process generation
 np.apply_along_axis(lambda line: X.append(len(line[0])), 1, matrix_test)
 #Total Nb api/rsi calls
-np.apply_along_axis(lambda line: X.append(len(line[1])), 1, matrix_test)
+np.apply_along_axis(lambda line: X_test.append(len(line[1])), 1, matrix_test)
 
 
 #Nb min d'api call par process
@@ -213,6 +217,51 @@ for i in range(0, len(npcount_line_tab)):
 
 npX = np.reshape(X, (p, N))
 
+#Total Nb process generation
+np.apply_along_axis(lambda line: X_test.append(len(line[0])), 1, matrix_validation)
+#Total Nb api/rsi calls
+np.apply_along_axis(lambda line: X_test.append(len(line[1])), 1, matrix_validation)
+
+
+#Nb min d'api call par process
+for i in range(0, len(npcount_line_tab_test)):
+    X_test.append(count_min_api_call_par_process(npcount_line_tab_test[i]))
+#Nb max d'api call par process
+for i in range(0, len(npcount_line_tab_test)):
+    X_test.append(count_max_api_call_par_process(npcount_line_tab_test[i]))
+#Nb moy d'api call par process
+for i in range(0, len(npcount_line_tab_test)):
+    X_test.append(count_moy_api_call_par_process(npcount_line_tab_test[i]))
+
+#Nb min same api call
+for i in range(0, len(npcount_line_tab_test)):
+    X_test.append(count_min_same_api_call(npcount_line_tab_test[i]))
+#Nb max same api call
+for i in range(0, len(npcount_line_tab_test)):
+    X_test.append(count_max_same_api_call(npcount_line_tab_test[i]))
+#Nb moy same api call
+for i in range(0, len(npcount_line_tab_test)):
+    X_test.append(count_moy_api_call(npcount_line_tab_test[i]))
+
+#Nb min same rsi call
+for i in range(0, len(npcount_line_tab_test)):
+    X_test.append(count_min_same_rsi_call(npcount_line_tab_test[i]))
+#Nb max same rsi call
+for i in range(0, len(npcount_line_tab_test)):
+    X_test.append(count_max_same_rsi_call(npcount_line_tab_test[i]))
+#Nb moy same rsi call
+for i in range(0, len(npcount_line_tab_test)):
+    X_test.append(count_moy_rsi_call(npcount_line_tab_test[i]))
+
+#Nb api differentes
+for i in range(0, len(npcount_line_tab_test)):
+    X.append(count_nb_api(npcount_line_tab_test[i]))
+#Nb rsi differentes
+for i in range(0, len(npcount_line_tab_test)):
+    X.append(count_nb_rsi(npcount_line_tab_test[i]))
+
+npX_test = np.reshape(X_test, (p, N_test))
+
 end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
 start_time = time.time()
@@ -250,7 +299,7 @@ X_train = pd.DataFrame(data=npX, index=np.arange(0,p), columns=np.arange(0,N))
 scaler = preprocessing.StandardScaler()
 scaler.fit(X_train)
 X_train = pd.DataFrame(scaler.transform(X_train), columns=X_train.columns)
-X_validation = pd.DataFrame(scaler.transform(X_validation), columns=X_validation.columns)
+X_test = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
 
 end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
@@ -261,7 +310,7 @@ parameters = {'kernel':('linear', 'rbf'), 'C':[1, 10]}
 svc = svm.SVC(gamma="scale")
 clf = GridSearchCV(svc, parameters, cv=5)
 clf.fit(X_train, label)
-label_result = clf.predict(X_validation)
+label_result = clf.predict(X_test)
 
 end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
