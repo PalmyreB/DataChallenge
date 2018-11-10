@@ -20,6 +20,13 @@ X_test=........
 y_test=........
 
 
+### III- feature engineering
+
+
+
+
+
+
 ###IV- Algorithms ### (use gridsearch)
 
 #1. Naïve Bayes
