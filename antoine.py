@@ -26,7 +26,7 @@ print("----------------------------------------Cleaning-------------------------
 np.apply_along_axis(lambda line: clean(line), 1, matrix_test)
 
 print("----------------------------------------Printing------------------------------------------------------")
-pprint.pprint(matrix_test)
+#pprint.pprint(matrix_test)
 
 p = 3 #Nb de features
 
@@ -42,12 +42,9 @@ def count_api_by_process(line):
     summ = 0.0
     counter = 0
     for key in dict_count:
-        try:
-            int(key, 16)
-        except: #not RSI
-            if str(key)[0:4] != "api_":
-                summ += dict_count[key]
-                counter += 1
+        if str(key)[0:4] != "api_" and "." not in str(key):
+            summ += dict_count[key]
+            counter += 1
     if counter != 0:
         return summ/counter
     else:
