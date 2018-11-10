@@ -7,7 +7,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import roc_curve
-from sklearn.metrics import auc
+from sklearn.metrics: import auc
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -16,9 +16,10 @@ import shutil
 from sklearn.cross_validation import train_test_split
 
 ###II- Loading data:
-X=np.load("palmyre/sample.raw") #1000 raws
-y= np.load("true_labels_training.txt")[:1000][:]
+X=np.load("antoine/main.py") #1000 raws
+y= np.load("true_labels_training.txt")
 X_train, X_test, y_train, y_test= train_test_split(X,y,test_size=0.2)
+#X_val=np.load(
 
 
 
@@ -148,5 +149,5 @@ file_path=''
 file_name='answer.txt'
 zip_file_directory=''
 np.savetxt(file_path+file_name, y_pred.values, fmt='%d')
-shutil.make_archive(file_path+file_name, 'zip',zip_file_directory)
+#shutil.make_archive(file_path+file_name, 'zip',zip_file_directory)
           
