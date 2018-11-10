@@ -12,7 +12,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 import shutil
-from sklearn.cross_validation import train_test_split
+
 
 ###II- Loading data:
 X=np.load("antoine/main.py") #1000 raws
