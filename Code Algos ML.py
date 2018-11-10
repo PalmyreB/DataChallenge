@@ -11,6 +11,8 @@ from sklearn.metrics import auc
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
+
 
 ###II- Loading data:
 
@@ -21,10 +23,6 @@ y_test=........
 
 
 ### III- feature engineering
-
-
-
-
 
 
 ###IV- Algorithms ### (use gridsearch)
@@ -47,10 +45,26 @@ plt.title('ROC curve')
 plt.legend(loc='Gaussian Naive Bayes')
 plt.show()    
 #2. SVM 
+C= list(range(100)) #Tune on this param or min_samples_split or max_features
+param_grid={'C':C}
+svm = SVC(kernel='rbf)
+best_svm=GridSearchCV(svm, param_grid, cv=20)
+best_svm.fit(X_train, y_train)
+print("Learning rate: ", best_svm.best_params_)
+print("Accuracy score (training): {0:.4f}".format(best_svm.score(X_train, y_train)))
+print("Accuracy score (testing): {0:.4f}".format(best_svm.score(X_test, y_test)))
 
+y_scores_svm = svm.decision_function(X_test)
+fpr_svm, tpr_svm, threshold = roc_curve(list(y_test), y_scores_svm)
+roc_auc_svm = auc(fpr_svm, tpr_svm)
 
-
-
+print("Area under ROC curve = {:0.2f}".format(roc_auc_svm))
+plt.plot(fpr_svm, tpr_svm)
+plt.xlabel('False positive rate')
+plt.ylabel('True positive rate')
+plt.title('ROC curve')
+plt.legend(loc='best for SVM')
+plt.show()    
 
 #3. Decision Trees
 max_depth= list(range(20)) #Tune on this param or min_samples_split or max_features
