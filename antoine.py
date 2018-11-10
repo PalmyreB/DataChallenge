@@ -21,6 +21,7 @@ print("----------------------------------------Import matrix--------------------
 #matrix_test = np.array([[[('stub.exe_9f01000', 'sample.exe_1356d000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']], [[('stub.exe_9f01000', 'sample.exe_1356d000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']], [[('stub.exe_1319c000', 'sample.exe_11ad0000'), ('stub.exe_1319c000', 'sample.exe_11ad0000')], ['sample.exe_1356d000,1fa617,api_1487\n', 'sample.exe_1356d000,1fa626,api_0496\n', 'sample.exe_1356d000,1fa62f,api_0338\n']]])
 matrix_test_total = np.load("../palmyre/matrix.raw")
 matrix_test = matrix_test_total[0:1000, :]
+del matrix_test_total[1000:, :]
 N = len(matrix_test)
 
 end_time = time.time()
@@ -52,6 +53,7 @@ print("----------------------------------------Done in "+str(end_time-start_time
 start_time = time.time()
 
 p = 13 #Nb de features
+pourcenttrain = 0.9
 X = []
 
 print("----------------------------------------Feature Engineering------------------------------------------------------")
@@ -242,13 +244,19 @@ end_time = time.time()
 print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
 start_time = time.time()
 
-#Min process generation
-#Max process generation
-#Threshold process generation -> np.where(y_tr >= 1800, 1, 0)
+print("----------------------------------------Scaling------------------------------------------------------")
+X_train = pd.DataFrame(data=npX, index=np.arange(0,p), columns=np.arange(0,N))
+scaler = preprocessing.StandardScaler()
+scaler.fit(X_train)
+X_train = pd.DataFrame(scaler.transform(X_train), columns=X_train.columns)
 
-#sequence of behaviors
-#nb/min/max of subprocess id
-#api is greater than 1
-#api is 0
+end_time = time.time()
+print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
+start_time = time.time()
 
-#behavior graph has boucle
+print("----------------------------------------Training------------------------------------------------------")
+
+
+end_time = time.time()
+print("----------------------------------------Done in "+str(end_time-start_time)+" s.------------------------------------------------------")
+start_time = time.time()
