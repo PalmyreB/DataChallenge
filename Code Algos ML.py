@@ -13,14 +13,14 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 import shutil
+from sklearn.cross_validation import train_test_split
 
 ###II- Loading data:
+X=np.load("palmyre/sample.raw") #1000 raws
+y= np.load("true_labels_training.txt")[:1000][:]
+X_train, X_test, y_train, y_test= train_test_split(X,y,test_size=0.2)
 
-X_train=....... 
-y_train=.......
-X_test=........
-y_test=........
-X_val=.........
+
 
 ### III- feature engineering
 
@@ -142,12 +142,12 @@ plt.show()
           
 #### Best classifier
           
-Best_classifier=.............
+Best_classifier=best_gb
 best_classifier.fit(X_train,y_train)
 y_pred=pd.DataFrame(best_classifier.predict(X_val))
-file_path='.....'
+file_path=''
 file_name='answer.txt'
-zip_file_directory=..............
+zip_file_directory=''
 np.savetxt(file_path+file_name, y_pred.values, fmt='%d')
 shutil.make_archive(file_path+file_name, 'zip',zip_file_directory)
           
