@@ -14,3 +14,5 @@ http://www.datafusionlab.org/sites/default/files/publications/Canzanese_QRS_2015
 
 ## Is it possible to detect malicious behaviour performed by malware, based on monitoring system calls?
 https://news.ycombinator.com/item?id=12183694
+
+## Paralléliser sur Python
