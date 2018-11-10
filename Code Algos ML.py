@@ -25,7 +25,6 @@ X_train, X_test, y_train, y_test= train_test_split(X,y,test_size=0.2)
 ### III- feature engineering
 
 
-
 ###IV- Algorithms ### (use gridsearch)
 
 #1. Naïve Bayes
